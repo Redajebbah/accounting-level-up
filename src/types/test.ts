@@ -9,7 +9,7 @@ export type DifficultyLevel = 'easy' | 'medium' | 'advanced';
 
 export type CandidateLevel = 'beginner' | 'intermediate' | 'advanced';
 
-export type CandidateStatus = 'new' | 'contacted' | 'enrolled';
+export type CandidateStatus = 'new' | 'contacted' | 'enrolled' | 'rejected';
 
 export interface QuestionOption {
   id: string;
@@ -48,6 +48,7 @@ export interface Candidate {
   recommended_training: string;
   status: CandidateStatus;
   answers: UserAnswer[] | null;
+  notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -111,4 +112,5 @@ export const STATUS_LABELS: Record<CandidateStatus, string> = {
   new: 'Nouveau',
   contacted: 'Contacté',
   enrolled: 'Inscrit',
+  rejected: 'Rejeté',
 };

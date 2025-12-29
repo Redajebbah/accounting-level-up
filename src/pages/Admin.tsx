@@ -1,14 +1,47 @@
+import { useState, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
 import { LoginForm } from '@/components/admin/LoginForm';
 import { CandidateTable } from '@/components/admin/CandidateTable';
-import { StatsCards } from '@/components/admin/StatsCards';
+import { DashboardKPIs } from '@/components/admin/DashboardKPIs';
+import { DashboardCharts } from '@/components/admin/DashboardCharts';
+import { CandidateFilters, CandidateFiltersState } from '@/components/admin/CandidateFilters';
 import { Button } from '@/components/ui/button';
 import { LogOut, RefreshCw, Loader2, ShieldX } from 'lucide-react';
+import { startOfDay, isEqual } from 'date-fns';
 
 export default function Admin() {
   const { user, isLoading: authLoading, isAdmin, signOut } = useAuth();
-  const { candidates, isLoading, updateCandidateStatus, getStatistics, refetch } = useAdmin();
+  const { candidates, isLoading, updateCandidateStatus, refetch } = useAdmin();
+  
+  const [filters, setFilters] = useState<CandidateFiltersState>({
+    level: 'all',
+    status: 'all',
+    date: undefined,
+  });
+
+  // Filter candidates based on selected filters
+  const filteredCandidates = useMemo(() => {
+    return candidates.filter(candidate => {
+      // Level filter
+      if (filters.level !== 'all' && candidate.level !== filters.level) {
+        return false;
+      }
+      // Status filter
+      if (filters.status !== 'all' && candidate.status !== filters.status) {
+        return false;
+      }
+      // Date filter
+      if (filters.date) {
+        const candidateDate = startOfDay(new Date(candidate.created_at));
+        const filterDate = startOfDay(filters.date);
+        if (!isEqual(candidateDate, filterDate)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [candidates, filters]);
 
   // Auth loading
   if (authLoading) {
@@ -45,8 +78,6 @@ export default function Admin() {
     );
   }
 
-  const stats = getStatistics();
-
   return (
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
@@ -71,68 +102,42 @@ export default function Admin() {
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats */}
-        <section className="mb-8">
-          <StatsCards stats={stats} />
-        </section>
-
-        {/* Level Distribution */}
-        <section className="mb-8">
-          <h2 className="font-serif text-xl text-foreground mb-4">Répartition par Niveau</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-card rounded-lg border border-border p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Débutant</span>
-                <span className="text-2xl font-bold text-foreground">{stats.byLevel.beginner}</span>
-              </div>
-              <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-500 rounded-full"
-                  style={{ width: `${stats.total > 0 ? (stats.byLevel.beginner / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-            <div className="bg-card rounded-lg border border-border p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Intermédiaire</span>
-                <span className="text-2xl font-bold text-foreground">{stats.byLevel.intermediate}</span>
-              </div>
-              <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-amber-500 rounded-full"
-                  style={{ width: `${stats.total > 0 ? (stats.byLevel.intermediate / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-            <div className="bg-card rounded-lg border border-border p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Avancé</span>
-                <span className="text-2xl font-bold text-foreground">{stats.byLevel.advanced}</span>
-              </div>
-              <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-green-500 rounded-full"
-                  style={{ width: `${stats.total > 0 ? (stats.byLevel.advanced / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
           </div>
-        </section>
+        ) : (
+          <>
+            {/* KPIs */}
+            <section className="mb-8">
+              <h2 className="font-serif text-xl text-foreground mb-4">Vue d'Ensemble</h2>
+              <DashboardKPIs candidates={candidates} />
+            </section>
 
-        {/* Candidates Table */}
-        <section>
-          <h2 className="font-serif text-xl text-foreground mb-4">Tous les Candidats</h2>
-          {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-accent" />
-            </div>
-          ) : (
-            <CandidateTable 
-              candidates={candidates} 
-              onStatusChange={updateCandidateStatus}
-            />
-          )}
-        </section>
+            {/* Charts */}
+            <section className="mb-8">
+              <DashboardCharts candidates={candidates} />
+            </section>
+
+            {/* Candidates Table */}
+            <section>
+              <h2 className="font-serif text-xl text-foreground mb-4">
+                Tous les Candidats
+                <span className="text-sm font-normal text-muted-foreground ml-2">
+                  ({filteredCandidates.length} sur {candidates.length})
+                </span>
+              </h2>
+              <CandidateFilters 
+                filters={filters} 
+                onFiltersChange={setFilters} 
+              />
+              <CandidateTable 
+                candidates={filteredCandidates} 
+                onStatusChange={updateCandidateStatus}
+              />
+            </section>
+          </>
+        )}
       </main>
     </div>
   );

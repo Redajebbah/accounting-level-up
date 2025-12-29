@@ -22,6 +22,7 @@ export type Database = {
           full_name: string
           id: string
           level: Database["public"]["Enums"]["candidate_level"]
+          notes: string | null
           phone: string
           recommended_training: string
           score: number
@@ -35,6 +36,7 @@ export type Database = {
           full_name: string
           id?: string
           level: Database["public"]["Enums"]["candidate_level"]
+          notes?: string | null
           phone: string
           recommended_training: string
           score: number
@@ -48,6 +50,7 @@ export type Database = {
           full_name?: string
           id?: string
           level?: Database["public"]["Enums"]["candidate_level"]
+          notes?: string | null
           phone?: string
           recommended_training?: string
           score?: number
@@ -120,7 +123,7 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       candidate_level: "beginner" | "intermediate" | "advanced"
-      candidate_status: "new" | "contacted" | "enrolled"
+      candidate_status: "new" | "contacted" | "enrolled" | "rejected"
       difficulty_level: "easy" | "medium" | "advanced"
       question_category:
         | "accounting_basics"
@@ -257,7 +260,7 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       candidate_level: ["beginner", "intermediate", "advanced"],
-      candidate_status: ["new", "contacted", "enrolled"],
+      candidate_status: ["new", "contacted", "enrolled", "rejected"],
       difficulty_level: ["easy", "medium", "advanced"],
       question_category: [
         "accounting_basics",

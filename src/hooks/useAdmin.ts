@@ -22,6 +22,7 @@ export function useAdmin() {
       const parsedCandidates: Candidate[] = (data || []).map(c => ({
         ...c,
         answers: c.answers as unknown as UserAnswer[] | null,
+        notes: c.notes ?? null,
       }));
 
       setCandidates(parsedCandidates);
@@ -80,6 +81,7 @@ export function useAdmin() {
       new: candidates.filter(c => c.status === 'new').length,
       contacted: candidates.filter(c => c.status === 'contacted').length,
       enrolled: candidates.filter(c => c.status === 'enrolled').length,
+      rejected: candidates.filter(c => c.status === 'rejected').length,
     };
     const byLevel = {
       beginner: candidates.filter(c => c.level === 'beginner').length,
