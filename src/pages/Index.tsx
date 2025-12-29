@@ -1,13 +1,150 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Hero } from '@/components/landing/Hero';
+import { QuestionCard } from '@/components/test/QuestionCard';
+import { ProgressBar } from '@/components/test/ProgressBar';
+import { LeadForm } from '@/components/test/LeadForm';
+import { ResultCard } from '@/components/test/ResultCard';
+import { useTest } from '@/hooks/useTest';
+import { supabase } from '@/integrations/supabase/client';
+import { LeadFormData, getRecommendedTraining } from '@/types/test';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
+
+type TestPhase = 'landing' | 'test' | 'lead-form' | 'result';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+  const [phase, setPhase] = useState<TestPhase>('landing');
+  const [candidateName, setCandidateName] = useState('');
+  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
+  const { toast } = useToast();
+
+  const {
+    currentQuestion,
+    currentIndex,
+    totalQuestions,
+    progress,
+    isLoading,
+    error,
+    isComplete,
+    testResult,
+    submitAnswer,
+  } = useTest();
+
+  const handleStartTest = () => {
+    setPhase('test');
+  };
+
+  const handleAnswer = (optionId: string) => {
+    submitAnswer(optionId);
+    
+    // Check if test is complete after this answer
+    if (currentIndex === totalQuestions - 1) {
+      setTimeout(() => setPhase('lead-form'), 500);
+    }
+  };
+
+  const handleLeadSubmit = async (data: LeadFormData) => {
+    if (!testResult) return;
+
+    setIsSubmittingLead(true);
+    setCandidateName(data.fullName);
+
+    try {
+      const { error } = await supabase
+        .from('candidates')
+        .insert([{
+          full_name: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          score: testResult.totalScore,
+          level: testResult.level,
+          recommended_training: getRecommendedTraining(testResult.level),
+          answers: testResult.answers as unknown as Record<string, unknown>[],
+        }]);
+
+      if (error) throw error;
+
+      setPhase('result');
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: err instanceof Error ? err.message : 'Failed to save your information',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmittingLead(false);
+    }
+  };
+
+  // Loading state
+  if (phase === 'test' && isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-accent mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading questions...</p>
+        </div>
       </div>
-    </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
+        <div className="text-center">
+          <p className="text-destructive mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="text-accent hover:underline"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-gradient-subtle">
+      {/* SEO */}
+      <title>Accounting Level Test | Discover Your Skill Level</title>
+      <meta name="description" content="Take our professional accounting assessment to evaluate your knowledge and get personalized training recommendations." />
+
+      {phase === 'landing' && (
+        <Hero onStartTest={handleStartTest} />
+      )}
+
+      {phase === 'test' && currentQuestion && (
+        <div className="min-h-screen py-8 px-4">
+          <div className="max-w-2xl mx-auto">
+            <ProgressBar 
+              progress={progress}
+              currentQuestion={currentIndex + 1}
+              totalQuestions={totalQuestions}
+            />
+            <QuestionCard
+              question={currentQuestion}
+              questionNumber={currentIndex + 1}
+              totalQuestions={totalQuestions}
+              onAnswer={handleAnswer}
+            />
+          </div>
+        </div>
+      )}
+
+      {phase === 'lead-form' && (
+        <div className="min-h-screen py-12 px-4 flex items-center">
+          <LeadForm onSubmit={handleLeadSubmit} isSubmitting={isSubmittingLead} />
+        </div>
+      )}
+
+      {phase === 'result' && testResult && (
+        <div className="min-h-screen py-12 px-4">
+          <ResultCard result={testResult} candidateName={candidateName} />
+        </div>
+      )}
+    </main>
   );
 };
 
