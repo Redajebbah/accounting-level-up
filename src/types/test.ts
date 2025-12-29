@@ -79,18 +79,36 @@ export function calculateLevel(score: number): CandidateLevel {
 export function getRecommendedTraining(level: CandidateLevel): string {
   switch (level) {
     case 'beginner':
-      return 'Fundamentals of Accounting - Complete Beginner Course';
+      return 'Les Fondamentaux de la Comptabilité - Formation Débutant';
     case 'intermediate':
-      return 'Advanced Accounting Techniques - Intermediate Program';
+      return 'Techniques Comptables Avancées - Programme Intermédiaire';
     case 'advanced':
-      return 'Expert Financial Analysis - Advanced Masterclass';
+      return 'Analyse Financière Expert - Masterclass Avancée';
   }
 }
 
 export const CATEGORY_LABELS: Record<QuestionCategory, string> = {
-  accounting_basics: 'Accounting Basics',
-  chart_of_accounts: 'Chart of Accounts',
-  vat: 'VAT (TVA)',
-  accounting_entries: 'Accounting Entries',
-  financial_analysis: 'Financial Analysis',
+  accounting_basics: 'Bases Comptables',
+  chart_of_accounts: 'Plan Comptable',
+  vat: 'TVA',
+  accounting_entries: 'Écritures Comptables',
+  financial_analysis: 'Analyse Financière',
+};
+
+export const DIFFICULTY_LABELS: Record<DifficultyLevel, string> = {
+  easy: 'Facile',
+  medium: 'Moyen',
+  advanced: 'Avancé',
+};
+
+export const LEVEL_LABELS: Record<CandidateLevel, string> = {
+  beginner: 'Débutant',
+  intermediate: 'Intermédiaire',
+  advanced: 'Avancé',
+};
+
+export const STATUS_LABELS: Record<CandidateStatus, string> = {
+  new: 'Nouveau',
+  contacted: 'Contacté',
+  enrolled: 'Inscrit',
 };

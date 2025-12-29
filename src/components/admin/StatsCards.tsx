@@ -22,25 +22,25 @@ interface StatsCardsProps {
 export function StatsCards({ stats }: StatsCardsProps) {
   const cards = [
     {
-      title: 'Total Candidates',
+      title: 'Total Candidats',
       value: stats.total,
       icon: <Users className="w-5 h-5" />,
       color: 'bg-blue-100 text-blue-600',
     },
     {
-      title: 'New Leads',
+      title: 'Nouveaux Leads',
       value: stats.byStatus.new,
       icon: <UserCheck className="w-5 h-5" />,
       color: 'bg-amber-100 text-amber-600',
     },
     {
-      title: 'Enrolled',
+      title: 'Inscrits',
       value: stats.byStatus.enrolled,
       icon: <GraduationCap className="w-5 h-5" />,
       color: 'bg-green-100 text-green-600',
     },
     {
-      title: 'Avg. Score',
+      title: 'Score Moyen',
       value: stats.averageScore,
       icon: <TrendingUp className="w-5 h-5" />,
       color: 'bg-purple-100 text-purple-600',
