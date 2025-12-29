@@ -12,21 +12,21 @@ export function Hero({ onStartTest }: HeroProps) {
       <div className="animate-fade-in mb-8">
         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium">
           <Award className="w-4 h-4 text-accent" />
-          Professional Accounting Assessment
+          Évaluation Comptable Professionnelle
         </span>
       </div>
 
       {/* Main Heading */}
       <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-center max-w-4xl mb-6 animate-slide-up text-foreground">
-        Discover Your{' '}
-        <span className="text-gradient-gold">Accounting Level</span>{' '}
-        in Minutes
+        Découvrez Votre{' '}
+        <span className="text-gradient-gold">Niveau en Comptabilité</span>{' '}
+        en Quelques Minutes
       </h1>
 
       {/* Subheading */}
       <p className="text-lg md:text-xl text-muted-foreground text-center max-w-2xl mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        Take our comprehensive assessment to evaluate your accounting knowledge 
-        and get personalized training recommendations tailored to your skill level.
+        Passez notre évaluation complète pour mesurer vos compétences comptables 
+        et recevez des recommandations de formation personnalisées selon votre niveau.
       </p>
 
       {/* CTA Button */}
@@ -37,7 +37,7 @@ export function Hero({ onStartTest }: HeroProps) {
           onClick={onStartTest}
           className="group"
         >
-          Start the Accounting Level Test
+          Commencer le Test de Niveau
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
@@ -46,18 +46,18 @@ export function Hero({ onStartTest }: HeroProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl w-full animate-slide-up" style={{ animationDelay: '0.3s' }}>
         <FeatureCard 
           icon={<Target className="w-6 h-6 text-accent" />}
-          title="20 Expert Questions"
-          description="Carefully crafted to assess all accounting competencies"
+          title="20 Questions Expert"
+          description="Conçues pour évaluer toutes vos compétences comptables"
         />
         <FeatureCard 
           icon={<CheckCircle className="w-6 h-6 text-accent" />}
-          title="Instant Results"
-          description="Get your level and recommendations immediately"
+          title="Résultats Instantanés"
+          description="Obtenez votre niveau et recommandations immédiatement"
         />
         <FeatureCard 
           icon={<Award className="w-6 h-6 text-accent" />}
-          title="Personalized Path"
-          description="Receive training tailored to your current level"
+          title="Parcours Personnalisé"
+          description="Recevez une formation adaptée à votre niveau actuel"
         />
       </div>
     </section>

@@ -11,7 +11,7 @@ export function ProgressBar({ progress, currentQuestion, totalQuestions }: Progr
     <div className="w-full max-w-2xl mx-auto mb-8">
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-muted-foreground">
-          Progress
+          Progression
         </span>
         <span className="text-sm font-medium text-foreground">
           {currentQuestion} / {totalQuestions}

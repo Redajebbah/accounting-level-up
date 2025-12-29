@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Question, CATEGORY_LABELS } from '@/types/test';
+import { Question, CATEGORY_LABELS, DIFFICULTY_LABELS } from '@/types/test';
 import { cn } from '@/lib/utils';
 import { CheckCircle } from 'lucide-react';
 
@@ -43,12 +43,6 @@ export function QuestionCard({
     advanced: 'bg-red-100 text-red-700 border-red-200',
   };
 
-  const difficultyLabels = {
-    easy: 'Easy',
-    medium: 'Medium',
-    advanced: 'Advanced',
-  };
-
   return (
     <div className="w-full max-w-2xl mx-auto animate-scale-in">
       {/* Header with category and difficulty */}
@@ -60,14 +54,14 @@ export function QuestionCard({
           'px-3 py-1 rounded-full text-xs font-medium border',
           difficultyColors[question.difficulty]
         )}>
-          {difficultyLabels[question.difficulty]}
+          {DIFFICULTY_LABELS[question.difficulty]}
         </span>
       </div>
 
       {/* Question */}
       <div className="bg-card rounded-xl border border-border p-6 md:p-8 shadow-sm">
         <p className="text-sm text-muted-foreground mb-2">
-          Question {questionNumber} of {totalQuestions}
+          Question {questionNumber} sur {totalQuestions}
         </p>
         
         <h2 className="font-serif text-xl md:text-2xl text-foreground mb-8">
@@ -118,7 +112,7 @@ export function QuestionCard({
             onClick={handleSubmit}
             disabled={!selectedOption || isSubmitting}
           >
-            {questionNumber === totalQuestions ? 'Complete Test' : 'Next Question'}
+            {questionNumber === totalQuestions ? 'Terminer le Test' : 'Question Suivante'}
           </Button>
         </div>
       </div>

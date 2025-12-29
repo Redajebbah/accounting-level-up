@@ -18,8 +18,8 @@ export function LoginForm() {
     
     if (!email || !password) {
       toast({
-        title: 'Error',
-        description: 'Please fill in all fields',
+        title: 'Erreur',
+        description: 'Veuillez remplir tous les champs',
         variant: 'destructive',
       });
       return;
@@ -33,8 +33,8 @@ export function LoginForm() {
 
     if (error) {
       toast({
-        title: 'Login Failed',
-        description: error.message || 'Invalid credentials',
+        title: 'Connexion échouée',
+        description: error.message || 'Identifiants invalides',
         variant: 'destructive',
       });
     }
@@ -50,10 +50,10 @@ export function LoginForm() {
               <Lock className="w-8 h-8 text-primary-foreground" />
             </div>
             <h1 className="font-serif text-2xl text-foreground mb-2">
-              Admin Login
+              Connexion Admin
             </h1>
             <p className="text-muted-foreground text-sm">
-              Access the candidate management dashboard
+              Accéder au tableau de bord de gestion des candidats
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export function LoginForm() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder="admin@exemple.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
@@ -76,7 +76,7 @@ export function LoginForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Mot de passe</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input
@@ -101,10 +101,10 @@ export function LoginForm() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Signing in...
+                  Connexion...
                 </>
               ) : (
-                'Sign In'
+                'Se Connecter'
               )}
             </Button>
           </form>

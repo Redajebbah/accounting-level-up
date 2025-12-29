@@ -7,9 +7,9 @@ import { User, Mail, Phone, Lock } from 'lucide-react';
 import { z } from 'zod';
 
 const leadSchema = z.object({
-  fullName: z.string().trim().min(2, 'Name must be at least 2 characters').max(100, 'Name too long'),
-  email: z.string().trim().email('Please enter a valid email').max(255, 'Email too long'),
-  phone: z.string().trim().min(8, 'Phone must be at least 8 digits').max(20, 'Phone too long'),
+  fullName: z.string().trim().min(2, 'Le nom doit contenir au moins 2 caractères').max(100, 'Nom trop long'),
+  email: z.string().trim().email('Veuillez entrer une adresse email valide').max(255, 'Email trop long'),
+  phone: z.string().trim().min(8, 'Le numéro doit contenir au moins 8 chiffres').max(20, 'Numéro trop long'),
 });
 
 interface LeadFormProps {
@@ -62,10 +62,10 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
             <Lock className="w-8 h-8 text-accent" />
           </div>
           <h2 className="font-serif text-2xl text-foreground mb-2">
-            Almost There!
+            Vous y êtes presque !
           </h2>
           <p className="text-muted-foreground">
-            Enter your details to see your results and get personalized recommendations.
+            Entrez vos coordonnées pour découvrir vos résultats et obtenir des recommandations personnalisées.
           </p>
         </div>
 
@@ -73,14 +73,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="fullName" className="text-foreground font-medium">
-              Full Name
+              Nom complet
             </Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="fullName"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Jean Dupont"
                 value={formData.fullName}
                 onChange={handleChange('fullName')}
                 className="pl-10"
@@ -94,14 +94,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-foreground font-medium">
-              Email Address
+              Adresse email
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="jean@exemple.com"
                 value={formData.email}
                 onChange={handleChange('email')}
                 className="pl-10"
@@ -115,14 +115,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-foreground font-medium">
-              Phone Number
+              Numéro de téléphone
             </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="phone"
                 type="tel"
-                placeholder="+1 234 567 8900"
+                placeholder="06 12 34 56 78"
                 value={formData.phone}
                 onChange={handleChange('phone')}
                 className="pl-10"
@@ -141,13 +141,13 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
             className="w-full mt-6"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Saving...' : 'See My Results'}
+            {isSubmitting ? 'Enregistrement...' : 'Voir Mes Résultats'}
           </Button>
         </form>
 
         <p className="text-xs text-muted-foreground text-center mt-6">
-          Your information is secure and will only be used to provide you 
-          with personalized training recommendations.
+          Vos informations sont sécurisées et seront utilisées uniquement pour vous 
+          proposer des recommandations de formation personnalisées.
         </p>
       </div>
     </div>

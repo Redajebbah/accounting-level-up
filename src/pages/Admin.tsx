@@ -32,13 +32,13 @@ export default function Admin() {
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
             <ShieldX className="w-8 h-8 text-destructive" />
           </div>
-          <h1 className="font-serif text-2xl text-foreground mb-2">Access Denied</h1>
+          <h1 className="font-serif text-2xl text-foreground mb-2">Accès Refusé</h1>
           <p className="text-muted-foreground mb-6">
-            You don't have admin privileges to access this dashboard.
+            Vous n'avez pas les privilèges administrateur pour accéder à ce tableau de bord.
           </p>
           <Button variant="outline" onClick={signOut}>
             <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
+            Se Déconnecter
           </Button>
         </div>
       </div>
@@ -53,17 +53,17 @@ export default function Admin() {
       <header className="bg-card border-b border-border px-4 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-2xl text-foreground">Admin Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Manage candidates and track conversions</p>
+            <h1 className="font-serif text-2xl text-foreground">Tableau de Bord Admin</h1>
+            <p className="text-sm text-muted-foreground">Gérer les candidats et suivre les conversions</p>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm" onClick={refetch} disabled={isLoading}>
               <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh
+              Actualiser
             </Button>
             <Button variant="ghost" size="sm" onClick={signOut}>
               <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
+              Déconnexion
             </Button>
           </div>
         </div>
@@ -78,11 +78,11 @@ export default function Admin() {
 
         {/* Level Distribution */}
         <section className="mb-8">
-          <h2 className="font-serif text-xl text-foreground mb-4">Level Distribution</h2>
+          <h2 className="font-serif text-xl text-foreground mb-4">Répartition par Niveau</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-card rounded-lg border border-border p-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Beginner</span>
+                <span className="text-muted-foreground">Débutant</span>
                 <span className="text-2xl font-bold text-foreground">{stats.byLevel.beginner}</span>
               </div>
               <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
@@ -94,7 +94,7 @@ export default function Admin() {
             </div>
             <div className="bg-card rounded-lg border border-border p-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Intermediate</span>
+                <span className="text-muted-foreground">Intermédiaire</span>
                 <span className="text-2xl font-bold text-foreground">{stats.byLevel.intermediate}</span>
               </div>
               <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
@@ -106,7 +106,7 @@ export default function Admin() {
             </div>
             <div className="bg-card rounded-lg border border-border p-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Advanced</span>
+                <span className="text-muted-foreground">Avancé</span>
                 <span className="text-2xl font-bold text-foreground">{stats.byLevel.advanced}</span>
               </div>
               <div className="mt-2 h-2 bg-secondary rounded-full overflow-hidden">
@@ -121,7 +121,7 @@ export default function Admin() {
 
         {/* Candidates Table */}
         <section>
-          <h2 className="font-serif text-xl text-foreground mb-4">All Candidates</h2>
+          <h2 className="font-serif text-xl text-foreground mb-4">Tous les Candidats</h2>
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin text-accent" />

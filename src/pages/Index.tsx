@@ -25,7 +25,6 @@ const Index = () => {
     progress,
     isLoading,
     error,
-    isComplete,
     testResult,
     submitAnswer,
   } = useTest();
@@ -59,7 +58,7 @@ const Index = () => {
           score: testResult.totalScore,
           level: testResult.level,
           recommended_training: getRecommendedTraining(testResult.level),
-          answers: testResult.answers as unknown as Record<string, unknown>[],
+          answers: JSON.parse(JSON.stringify(testResult.answers)),
         }]);
 
       if (error) throw error;
@@ -67,8 +66,8 @@ const Index = () => {
       setPhase('result');
     } catch (err) {
       toast({
-        title: 'Error',
-        description: err instanceof Error ? err.message : 'Failed to save your information',
+        title: 'Erreur',
+        description: err instanceof Error ? err.message : 'Impossible de sauvegarder vos informations',
         variant: 'destructive',
       });
     } finally {
@@ -82,7 +81,7 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-accent mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading questions...</p>
+          <p className="text-muted-foreground">Chargement des questions...</p>
         </div>
       </div>
     );
@@ -98,7 +97,7 @@ const Index = () => {
             onClick={() => window.location.reload()} 
             className="text-accent hover:underline"
           >
-            Try again
+            Réessayer
           </button>
         </div>
       </div>
@@ -108,8 +107,8 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-gradient-subtle">
       {/* SEO */}
-      <title>Accounting Level Test | Discover Your Skill Level</title>
-      <meta name="description" content="Take our professional accounting assessment to evaluate your knowledge and get personalized training recommendations." />
+      <title>Test de Niveau Comptable | Évaluez Vos Compétences</title>
+      <meta name="description" content="Passez notre évaluation comptable professionnelle pour mesurer vos connaissances et obtenir des recommandations de formation personnalisées." />
 
       {phase === 'landing' && (
         <Hero onStartTest={handleStartTest} />

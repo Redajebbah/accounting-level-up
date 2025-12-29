@@ -1,4 +1,4 @@
-import { Candidate, CandidateStatus, CandidateLevel } from '@/types/test';
+import { Candidate, CandidateStatus, CandidateLevel, STATUS_LABELS, LEVEL_LABELS } from '@/types/test';
 import { 
   Table, 
   TableBody, 
@@ -17,6 +17,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface CandidateTableProps {
   candidates: Candidate[];
@@ -39,7 +40,7 @@ export function CandidateTable({ candidates, onStatusChange }: CandidateTablePro
   if (candidates.length === 0) {
     return (
       <div className="text-center py-12 bg-card rounded-lg border border-border">
-        <p className="text-muted-foreground">No candidates yet</p>
+        <p className="text-muted-foreground">Aucun candidat pour le moment</p>
       </div>
     );
   }
@@ -49,13 +50,13 @@ export function CandidateTable({ candidates, onStatusChange }: CandidateTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-secondary/50">
-            <TableHead>Name</TableHead>
+            <TableHead>Nom</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
+            <TableHead>Téléphone</TableHead>
             <TableHead className="text-center">Score</TableHead>
-            <TableHead>Level</TableHead>
-            <TableHead>Training</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Niveau</TableHead>
+            <TableHead>Formation</TableHead>
+            <TableHead>Statut</TableHead>
             <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>
@@ -68,7 +69,7 @@ export function CandidateTable({ candidates, onStatusChange }: CandidateTablePro
               <TableCell className="text-center font-semibold">{candidate.score}</TableCell>
               <TableCell>
                 <Badge className={cn('capitalize', levelColors[candidate.level])}>
-                  {candidate.level}
+                  {LEVEL_LABELS[candidate.level]}
                 </Badge>
               </TableCell>
               <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
@@ -88,14 +89,14 @@ export function CandidateTable({ candidates, onStatusChange }: CandidateTablePro
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="contacted">Contacted</SelectItem>
-                    <SelectItem value="enrolled">Enrolled</SelectItem>
+                    <SelectItem value="new">{STATUS_LABELS.new}</SelectItem>
+                    <SelectItem value="contacted">{STATUS_LABELS.contacted}</SelectItem>
+                    <SelectItem value="enrolled">{STATUS_LABELS.enrolled}</SelectItem>
                   </SelectContent>
                 </Select>
               </TableCell>
               <TableCell className="text-sm text-muted-foreground">
-                {format(new Date(candidate.created_at), 'MMM d, yyyy')}
+                {format(new Date(candidate.created_at), 'd MMM yyyy', { locale: fr })}
               </TableCell>
             </TableRow>
           ))}
