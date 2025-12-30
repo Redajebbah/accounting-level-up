@@ -5,12 +5,7 @@ import { Label } from '@/components/ui/label';
 import { LeadFormData } from '@/types/test';
 import { User, Mail, Phone, Lock } from 'lucide-react';
 import { z } from 'zod';
-
-const leadSchema = z.object({
-  fullName: z.string().trim().min(2, 'Le nom doit contenir au moins 2 caractères').max(100, 'Nom trop long'),
-  email: z.string().trim().email('Veuillez entrer une adresse email valide').max(255, 'Email trop long'),
-  phone: z.string().trim().min(8, 'Le numéro doit contenir au moins 8 chiffres').max(20, 'Numéro trop long'),
-});
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface LeadFormProps {
   onSubmit: (data: LeadFormData) => void;
@@ -18,12 +13,19 @@ interface LeadFormProps {
 }
 
 export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
+  const t = useTranslations();
   const [formData, setFormData] = useState<LeadFormData>({
     fullName: '',
     email: '',
     phone: '',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof LeadFormData, string>>>({});
+
+  const leadSchema = z.object({
+    fullName: z.string().trim().min(2, t.leadForm.errors.nameMin).max(100, t.leadForm.errors.nameTooLong),
+    email: z.string().trim().email(t.leadForm.errors.emailInvalid).max(255, t.leadForm.errors.emailTooLong),
+    phone: z.string().trim().min(8, t.leadForm.errors.phoneMin).max(20, t.leadForm.errors.phoneTooLong),
+  });
 
   const handleChange = (field: keyof LeadFormData) => (
     e: React.ChangeEvent<HTMLInputElement>
@@ -62,10 +64,10 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
             <Lock className="w-8 h-8 text-accent" />
           </div>
           <h2 className="font-serif text-2xl text-foreground mb-2">
-            Vous y êtes presque !
+            {t.leadForm.title}
           </h2>
           <p className="text-muted-foreground">
-            Entrez vos coordonnées pour découvrir vos résultats et obtenir des recommandations personnalisées.
+            {t.leadForm.subtitle}
           </p>
         </div>
 
@@ -73,14 +75,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="fullName" className="text-foreground font-medium">
-              Nom complet
+              {t.leadForm.fullName}
             </Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="fullName"
                 type="text"
-                placeholder="Jean Dupont"
+                placeholder={t.leadForm.fullNamePlaceholder}
                 value={formData.fullName}
                 onChange={handleChange('fullName')}
                 className="pl-10"
@@ -94,14 +96,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-foreground font-medium">
-              Adresse email
+              {t.leadForm.email}
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
-                placeholder="jean@exemple.com"
+                placeholder={t.leadForm.emailPlaceholder}
                 value={formData.email}
                 onChange={handleChange('email')}
                 className="pl-10"
@@ -115,14 +117,14 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-foreground font-medium">
-              Numéro de téléphone
+              {t.leadForm.phone}
             </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 id="phone"
                 type="tel"
-                placeholder="06 12 34 56 78"
+                placeholder={t.leadForm.phonePlaceholder}
                 value={formData.phone}
                 onChange={handleChange('phone')}
                 className="pl-10"
@@ -141,13 +143,12 @@ export function LeadForm({ onSubmit, isSubmitting }: LeadFormProps) {
             className="w-full mt-6"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Enregistrement...' : 'Voir Mes Résultats'}
+            {t.leadForm.submit}
           </Button>
         </form>
 
         <p className="text-xs text-muted-foreground text-center mt-6">
-          Vos informations sont sécurisées et seront utilisées uniquement pour vous 
-          proposer des recommandations de formation personnalisées.
+          {t.leadForm.privacyNote}
         </p>
       </div>
     </div>

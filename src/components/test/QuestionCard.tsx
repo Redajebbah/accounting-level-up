@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Question, CATEGORY_LABELS, DIFFICULTY_LABELS } from '@/types/test';
+import { Question } from '@/types/test';
 import { cn } from '@/lib/utils';
 import { CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslations, getLocalizedQuestion, getLocalizedOption } from '@/hooks/useTranslations';
+import { formatString } from '@/i18n/translations';
 
 interface QuestionCardProps {
   question: Question;
@@ -17,6 +20,8 @@ export function QuestionCard({
   totalQuestions, 
   onAnswer 
 }: QuestionCardProps) {
+  const { language } = useLanguage();
+  const t = useTranslations();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,24 +53,27 @@ export function QuestionCard({
       {/* Header with category and difficulty */}
       <div className="flex items-center justify-between mb-6">
         <span className="text-sm font-medium text-muted-foreground">
-          {CATEGORY_LABELS[question.category]}
+          {t.categories[question.category]}
         </span>
         <span className={cn(
           'px-3 py-1 rounded-full text-xs font-medium border',
           difficultyColors[question.difficulty]
         )}>
-          {DIFFICULTY_LABELS[question.difficulty]}
+          {t.difficulty[question.difficulty]}
         </span>
       </div>
 
       {/* Question */}
       <div className="bg-card rounded-xl border border-border p-6 md:p-8 shadow-sm">
         <p className="text-sm text-muted-foreground mb-2">
-          Question {questionNumber} sur {totalQuestions}
+          {formatString(t.questionCard.questionOf, { 
+            current: String(questionNumber), 
+            total: String(totalQuestions) 
+          })}
         </p>
         
         <h2 className="font-serif text-xl md:text-2xl text-foreground mb-8">
-          {question.question_text}
+          {getLocalizedQuestion(question, language)}
         </h2>
 
         {/* Options */}
@@ -97,7 +105,7 @@ export function QuestionCard({
                     option.id.toUpperCase()
                   )}
                 </span>
-                <span className="text-foreground font-medium">{option.text}</span>
+                <span className="text-foreground font-medium">{getLocalizedOption(option, language)}</span>
               </div>
             </button>
           ))}
@@ -112,7 +120,7 @@ export function QuestionCard({
             onClick={handleSubmit}
             disabled={!selectedOption || isSubmitting}
           >
-            {questionNumber === totalQuestions ? 'Terminer le Test' : 'Question Suivante'}
+            {questionNumber === totalQuestions ? t.questionCard.finishTest : t.questionCard.nextQuestion}
           </Button>
         </div>
       </div>

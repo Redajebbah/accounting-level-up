@@ -1,73 +1,137 @@
-# Welcome to your Lovable project
+# Accounting Level Up - Accounting Proficiency Test
 
-## Project info
+A professional accounting proficiency assessment platform with AI-powered admin dashboard for candidate management and lead tracking.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Accounting Test**: 20 comprehensive questions covering accounting fundamentals, VAT, chart of accounts, and financial analysis
+- **Instant Results**: Immediate assessment with candidate scoring and level classification (Beginner, Intermediate, Advanced)
+- **Lead Capture**: Secure lead collection with email confirmation and WhatsApp integration
+- **Admin Dashboard**: Full candidate management, filtering, status tracking, and analytics
+- **Secure Authentication**: Admin-only access with row-level security (RLS)
+- **Professional Styling**: French-localized UI with Tailwind CSS and shadcn components
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18 + TypeScript + Vite
+- **UI**: Tailwind CSS + shadcn-ui components
+- **Backend**: Supabase (PostgreSQL + Auth + RLS)
+- **Forms**: React Hook Form + Zod validation
+- **State**: TanStack Query (React Query)
+- **Routing**: React Router v6
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Supabase account
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd accounting-level-up
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Create .env with your Supabase credentials
+echo 'VITE_SUPABASE_URL="your_url"' > .env
+echo 'VITE_SUPABASE_PUBLISHABLE_KEY="your_key"' >> .env
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Development
+
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open http://localhost:8080 in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Production Build
 
-**Use GitHub Codespaces**
+```sh
+npm run build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+src/
+├── pages/           # Route pages (Index, Admin, CandidateDetail)
+├── components/      # Reusable components
+│   ├── ui/         # shadcn UI components
+│   ├── admin/      # Admin-specific components
+│   ├── landing/    # Landing page components
+│   └── test/       # Test flow components
+├── hooks/          # Custom React hooks (useAuth, useAdmin, useTest)
+├── integrations/   # External service integrations (Supabase)
+├── types/          # TypeScript type definitions
+└── lib/            # Utility functions
+```
 
-This project is built with:
+## Admin Dashboard
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Access the admin dashboard at `/admin`:
+- Email: `khalid@gmail.com` (or your admin email)
+- Password: Set during admin account creation
 
-## How can I deploy this project?
+### Features
+- View all test results and candidate information
+- Filter by level, status, and date
+- Update candidate status (New, Contacted, Enrolled, Rejected)
+- Add admin notes for follow-up
+- View KPIs and conversion analytics
+- Export candidate data
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Database Schema
 
-## Can I connect a custom domain to my Lovable project?
+### Tables
+- `questions` - Test questions with options
+- `candidates` - Test results and lead information
+- `user_roles` - Admin role assignment
 
-Yes, you can!
+### Security
+- Row Level Security (RLS) enabled on all tables
+- Public read access to questions
+- Public insert for candidates (anonymous test submissions)
+- Admin-only read/update for candidate data
+- Secure role checking via `has_role()` function
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Vercel (Recommended)
+
+```sh
+npm install -g vercel
+vercel
+```
+
+Add environment variables in Vercel dashboard:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+
+### Custom Server
+
+```sh
+npm run build
+# Deploy the 'dist' folder to your server
+```
+
+## Contributing
+
+1. Create a feature branch: `git checkout -b feature/your-feature`
+2. Commit changes: `git commit -m 'Add your feature'`
+3. Push branch: `git push origin feature/your-feature`
+4. Open a Pull Request
+
+## License
+
+Proprietary - Accounting Level Up
+
+## Support
+
+For issues or questions, contact the development team.

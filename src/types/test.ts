@@ -14,11 +14,13 @@ export type CandidateStatus = 'new' | 'contacted' | 'enrolled' | 'rejected';
 export interface QuestionOption {
   id: string;
   text: string;
+  text_en?: string; // English translation
 }
 
 export interface Question {
   id: string;
   question_text: string;
+  question_text_en?: string; // English translation
   category: QuestionCategory;
   difficulty: DifficultyLevel;
   options: QuestionOption[];
